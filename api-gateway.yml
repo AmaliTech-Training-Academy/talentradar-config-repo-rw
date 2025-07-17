@@ -12,14 +12,22 @@ spring:
           uri: lb://user-service
           predicates:
             - Path=/api/v1/auth/**
+            
         - id: user-service
           uri: lb://user-service
           predicates:
             - Path=/api/v1/users/**
+            
         - id: notification-service
           uri: lb://notification-service
           predicates:
             - Path=/api/v1/notifications/**
+            
+        # assessment Service Routes
+        - id: assessment-service
+          uri: lb://assessment-service
+          predicates:
+            - Path=/api/v1/assessments/**
 eureka:
   client:
     serviceUrl:
