@@ -1,0 +1,50 @@
+server:
+  port: ${SERVER_PORT:3000}
+
+spring:
+  datasource:
+    url: ${DB_URL}
+    username: ${DB_USERNAME}
+    password: ${DB_PASSWORD}
+    driver-class-name: ${DB_DRIVER_CLASS_NAME}
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+    properties:
+      hibernate:
+        format_sql: true
+  security:
+    jwt:
+      secret: ${JWT_SECRET}
+      expirationMs: ${JWT_EXPIRATION_MS:86400000}
+  mail:
+    host: ${MAIL_HOST:smtp.gmail.com}
+    port: ${MAIL_PORT:587}
+    username: ${MAIL_USERNAME}
+    password: ${MAIL_PASSWORD}
+    protocol: smtp
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true
+          ssl:
+            trust: smtp.gmail.com
+        debug: true  # Helpful for troubleshooting
+
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: ${SPRING_EUREKA_CLIENT_SERVICEURL_DEFAULTZONE}
+  instance:
+    prefer-ip-address: true
+
+app:
+  base-url: ${APP_BASE_URL:http://localhost:4200}
+  notification:
+    email:
+      from: ${NOTIFICATION_EMAIL_FROM}
+      subject:
+        prefix: ${NOTIFICATION_EMAIL_SUBJECT_PREFIX}
