@@ -28,7 +28,9 @@ spring:
         - id: assessment-service
           uri: lb://assessment-service
           predicates:
-            - Path=/api/v1/assessments/**
+            - Path=/api/v1/assessments/**,/api/v1/feedbacks/**,/api/v1/dimensions/**            
+          filters:
+            #- StripPrefix=2
 eureka:
   client:
     serviceUrl:
