@@ -56,16 +56,6 @@ app:
       secret: ${APP_REGISTRATION_TOKEN_SECRET}
       expiration-ms: 86400
 
-# Session management
-spring:
-  session:
-    store-type: redis
-    timeout: 30m
-  data:
-    redis:
-      host: ${REDIS_HOSTNAME:localhost}
-      port: ${REDIS_PORT:6379}
-
 # Logging configuration
 logging:
   level:
