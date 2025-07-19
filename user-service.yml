@@ -1,12 +1,12 @@
 server:
-  port: ${SERVER_PORT:3000}
+  port: ${SERVER_PORT:8081}
 
 spring:
   datasource:
     url: ${DB_URL}
     username: ${DB_USERNAME}
     password: ${DB_PASSWORD}
-    driver-class-name: ${DB_DRIVER_CLASS_NAME}
+    driver-class-name: org.postgresql.Driver
   jpa:
     hibernate:
       ddl-auto: update
@@ -14,13 +14,14 @@ spring:
     properties:
       hibernate:
         format_sql: true
+        dialect: org.hibernate.dialect.PostgreSQLDialect
   security:
     jwt:
       secret: ${JWT_SECRET}
-      expirationMs: ${JWT_EXPIRATION_MS:86400000}
+      expirationMs: 86400000
   mail:
-    host: ${MAIL_HOST:smtp.gmail.com}
-    port: ${MAIL_PORT:587}
+    host: smtp.gmail.com
+    port: 587
     username: ${MAIL_USERNAME}
     password: ${MAIL_PASSWORD}
     protocol: smtp
@@ -32,7 +33,7 @@ spring:
             enable: true
           ssl:
             trust: smtp.gmail.com
-        debug: true  # Helpful for troubleshooting
+        debug: false  # Changed to false for production
 
 eureka:
   client:
@@ -40,6 +41,8 @@ eureka:
       defaultZone: ${SPRING_EUREKA_CLIENT_SERVICEURL_DEFAULTZONE}
   instance:
     prefer-ip-address: true
+    lease-renewal-interval-in-seconds: 10
+    lease-expiration-duration-in-seconds: 30
 
 app:
   base-url: ${APP_BASE_URL:http://localhost:4200}
@@ -47,4 +50,38 @@ app:
     email:
       from: ${NOTIFICATION_EMAIL_FROM}
       subject:
-        prefix: ${NOTIFICATION_EMAIL_SUBJECT_PREFIX}
+        prefix: "[TalentRadar]"
+  registration:
+    token:
+      secret: ${APP_REGISTRATION_TOKEN_SECRET}
+      expiration-ms: 86400
+
+# Session management
+spring:
+  session:
+    store-type: redis
+    timeout: 30m
+  data:
+    redis:
+      host: ${REDIS_HOSTNAME:localhost}
+      port: ${REDIS_PORT:6379}
+
+# Logging configuration
+logging:
+  level:
+    com.talentradar.user_service: INFO
+    org.springframework.security: DEBUG
+    org.springframework.mail: DEBUG
+  pattern:
+    console: "%d{yyyy-MM-dd HH:mm:ss} - %msg%n"
+    file: "%d{yyyy-MM-dd HH:mm:ss} [%thread] %-5level %logger{36} - %msg%n"
+
+# Management endpoints
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info,metrics
+  endpoint:
+    health:
+      show-details: when-authorized
