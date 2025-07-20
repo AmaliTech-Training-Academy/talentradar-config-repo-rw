@@ -7,30 +7,47 @@ spring:
       expiration: ${JWT_EXPIRATION_MS}
   cloud:
     gateway:
+      globalcors:
+        corsConfigurations:
+          '[/**]':
+            allowedOrigins:
+              - http://localhost:3000
+            allowedMethods:
+              - GET
+              - POST
+              - PUT
+              - DELETE
+              - OPTIONS
+            allowedHeaders: '*'
+            allowCredentials: true
       routes:
         - id:
           uri: lb://user-service
           predicates:
             - Path=/api/v1/auth/**
-            
         - id: user-service
           uri: lb://user-service
           predicates:
             - Path=/api/v1/users/**
-
-        # notification service routes
-        - id: notification-service
-          uri: lb://notification-service
+        - id: user-service
+          uri: lb://user-service
           predicates:
-            - Path=/api/v1/notifications/**
-            
+            - Path=/api/v1/roles/**
+        - id: user-service
+          uri: lb://user-service
+          predicates:
+            - Path=/api/v1/admin/sessions/**
         # assessment Service Routes
         - id: assessment-service
           uri: lb://assessment-service
           predicates:
-            - Path=/api/v1/assessments/**,/api/v1/feedbacks/**,/api/v1/dimensions/**            
-          filters:
-            #- StripPrefix=2
+            - Path=/api/v1/assessments/**,/api/v1/feedbacks/**,/api/v1/dimensions/**
+        # notification Service Routes
+        - id: notification-service
+          uri: lb://notification-service
+          predicates:
+            - Path=/api/v1/notifications/**
+
 eureka:
   client:
     serviceUrl:
