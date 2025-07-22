@@ -1,23 +1,10 @@
 eureka:
   client:
-    registerWithEureka: ${EUREKA_CLIENT_REGISTER_WITH_EUREKA:false}
-    fetchRegistry: ${EUREKA_CLIENT_FETCH_REGISTRY:false}
+    registerWithEureka: ${EUREKA_CLIENT_REGISTER_WITH_EUREKA:8761}
+    fetchRegistry: ${EUREKA_CLIENT_FETCH_REGISTRY}
     serviceUrl:
-      # Dynamic construction using Spring Boot's auto-detected values
-      defaultZone: http://${eureka.instance.hostname:${spring.cloud.client.hostname:localhost}}:${server.port:8761}/eureka
+      defaultZone: ${SPRING_EUREKA_CLIENT_SERVICEURL_DEFAULTZONE}
   instance:
-    # Use Spring Boot's auto-detected hostname/IP
-    hostname: ${spring.cloud.client.hostname:${HOSTNAME:localhost}}
-    prefer-ip-address: ${EUREKA_INSTANCE_PREFER_IP_ADDRESS:true}
-    # Optional: explicitly set IP if needed
-    ip-address: ${spring.cloud.client.ip-address:}
+    prefer-ip-address: true
   server:
-    enable-self-preservation: ${EUREKA_SERVER_ENABLE_SELF_PRESERVATION:false}
-    eviction-interval-timer-in-ms: ${EUREKA_SERVER_EVICTION_INTERVAL:10000}
-
-server:
-  port: ${SERVER_PORT:8761}
-
-spring:
-  application:
-    name: ${SPRING_APPLICATION_NAME:eureka-server}
+    enable-self-preservation: ${EUREKA_SERVER_ENABLE_SELF_PRESERVATION}
