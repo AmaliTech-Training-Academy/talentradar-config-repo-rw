@@ -1,27 +1,43 @@
 server:
   port: ${SERVER_PORT}
+
 spring:
+  data:
+    redis:
+      host: ${REDIS_HOSTNAME}
+      port: ${REDIS_PORT}
+      password: ${REDIS_PASSWORD}
+  redis:
+    host: ${REDIS_HOSTNAME}
+    port: ${REDIS_PORT}
+    password: ${REDIS_PASSWORD}
+
   security:
     jwt:
       secret: ${JWT_SECRET}
       expiration: ${JWT_EXPIRATION_MS}
+
   cloud:
     gateway:
       globalcors:
+        add-to-simple-url-handler-mapping: true
         corsConfigurations:
           '[/**]':
             allowedOrigins:
-              - http://localhost:3000
+              - http://talent-radar-unified-alb-1785495301.eu-west-1.elb.amazonaws.com:3000
             allowedMethods:
               - GET
               - POST
               - PUT
               - DELETE
+              - PATCH
               - OPTIONS
-            allowedHeaders: '*'
+            allowedHeaders:
+              - '*'
             allowCredentials: true
+
       routes:
-        - id:
+        - id: user-service
           uri: lb://user-service
           predicates:
             - Path=/api/v1/auth/**
@@ -37,16 +53,24 @@ spring:
           uri: lb://user-service
           predicates:
             - Path=/api/v1/admin/sessions/**
+
         # assessment Service Routes
         - id: assessment-service
           uri: lb://assessment-service
           predicates:
             - Path=/api/v1/assessments/**,/api/v1/feedbacks/**,/api/v1/dimensions/**
+
         # notification Service Routes
         - id: notification-service
           uri: lb://notification-service
           predicates:
             - Path=/api/v1/notifications/**
+
+        # AI Analysis Service Routes
+        - id: ai-analysis-service
+          uri: lb://talentradar-ai-analysis
+          predicates:
+            - Path=/api/ai-analysis/**
 
 eureka:
   client:
@@ -54,4 +78,3 @@ eureka:
       defaultZone: ${SPRING_EUREKA_CLIENT_SERVICEURL_DEFAULTZONE}
   instance:
     prefer-ip-address: true
-    hostname: ${HOSTNAME}
