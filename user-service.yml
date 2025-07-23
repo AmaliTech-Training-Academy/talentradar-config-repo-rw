@@ -14,7 +14,7 @@ spring:
   redis:
     host: ${REDIS_HOSTNAME}
     port: ${REDIS_PORT}
-    password: ${REDIS_PASSWORD}
+    
 
   kafka:
     bootstrap-servers: talent-radar-kafka-server-demo-hib.j.aivencloud.com:24032
@@ -78,3 +78,8 @@ app:
 topic:
   user-created: user-created
   user-updated: user-updated
+  
+logging:
+  level:
+    org.springframework.data.redis: DEBUG
+    io.lettuce.core: DEBUG
