@@ -19,7 +19,7 @@ spring:
         corsConfigurations:
           '[/**]':
             allowedOrigins:
-              - http://talent-radar-unified-alb-1785495301.eu-west-1.elb.amazonaws.com:3000
+              - http://talent-radar-unified-alb-1785495301.eu-west-1.elb.amazonaws.com:3000,http://localhost:63644
             allowedMethods:
               - GET
               - POST
