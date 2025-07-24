@@ -1,25 +1,29 @@
 server:
   port: ${SERVER_PORT}
-
 spring:
   data:
     redis:
       host: ${REDIS_HOSTNAME}
-      port: ${REDIS_PORT:6379}
-
+      port: ${REDIS_PORT}
+      password: ${REDIS_PASSWORD}
+  redis:
+    host: ${REDIS_HOSTNAME}
+    port: ${REDIS_PORT}
+    password: ${REDIS_PASSWORD}
   security:
     jwt:
       secret: ${JWT_SECRET}
       expiration: ${JWT_EXPIRATION_MS}
-
   cloud:
     gateway:
       globalcors:
-        add-to-simple-url-handler-mapping: true
         corsConfigurations:
           '[/**]':
             allowedOrigins:
-              - http://talent-radar-unified-alb-1785495301.eu-west-1.elb.amazonaws.com:3000,http://localhost:63644
+              - http://localhost:3000
+              - https://talentradar-frontend-project-rw.vercel.app
+              - https://talentradar-frontend-proj-git-ee52f0-muhirwas-projects-2023eaf6.vercel.app
+              - http://localhost:63644
             allowedMethods:
               - GET
               - POST
@@ -27,10 +31,8 @@ spring:
               - DELETE
               - PATCH
               - OPTIONS
-            allowedHeaders:
-              - '*'
+            allowedHeaders: '*'
             allowCredentials: true
-
       routes:
         - id: user-service
           uri: lb://user-service
@@ -48,13 +50,11 @@ spring:
           uri: lb://user-service
           predicates:
             - Path=/api/v1/admin/sessions/**
-
         # assessment Service Routes
         - id: assessment-service
           uri: lb://assessment-service
           predicates:
-            - Path=/api/v1/assessments/**,/api/v1/feedbacks/**,/api/v1/dimensions/**
-
+            - Path=/api/v1/assessments/**,/api/v1/feedbacks/**,/api/v1/dimensions/**,/api/v1/user-assign/**
         # notification Service Routes
         - id: notification-service
           uri: lb://notification-service
@@ -65,13 +65,12 @@ spring:
               args:
                 regexp: "/ws-notifications/(?<segment>.*)"
                 replacement: "/ws-notifications/${segment}"
-
+                
         # AI Analysis Service Routes
         - id: ai-analysis-service
           uri: lb://talentradar-ai-analysis
           predicates:
             - Path=/api/ai-analysis/**
-
 eureka:
   client:
     serviceUrl:
