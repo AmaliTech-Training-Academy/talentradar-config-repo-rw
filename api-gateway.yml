@@ -59,7 +59,7 @@ spring:
         - id: notification-service
           uri: lb://notification-service
           predicates:
-            - Path=/api/v1/notifications/**
+            - Path=/api/v1/notifications/**,/ws-notifications/**
 
         # AI Analysis Service Routes
         - id: ai-analysis-service
