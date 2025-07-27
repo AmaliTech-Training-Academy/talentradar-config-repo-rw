@@ -84,9 +84,6 @@ spring:
               args:
                 name: Access-Control-Allow-Credentials
                 value: "true"
-            - name: RemoveRequestHeader
-              args:
-                name: Sec-WebSocket-Key
                 
         # AI Analysis Service Routes
         - id: ai-analysis-service
