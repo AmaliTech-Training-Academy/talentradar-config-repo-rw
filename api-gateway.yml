@@ -21,7 +21,6 @@ spring:
           '[/**]':
             allowedOrigins:
               - http://localhost:3000
-              - http://localhost:63644
               - https://talentradar-frontend-project-rw.vercel.app
               - https://talentradar-frontend-proj-git-ee52f0-muhirwas-projects-2023eaf6.vercel.app
               - http://talent-radar-unified-alb-1041393351.eu-west-1.elb.amazonaws.com:3000
@@ -67,6 +66,22 @@ spring:
               args:
                 regexp: "/ws-notifications/(?<segment>.*)"
                 replacement: "/ws-notifications/${segment}"
+            - name: SetResponseHeader
+              args:
+                name: Access-Control-Allow-Origin
+                value: "http://localhost:3000"
+            - name: SetResponseHeader
+              args:
+                name: Access-Control-Allow-Methods
+                value: "GET, POST, OPTIONS"
+            - name: SetResponseHeader
+              args:
+                name: Access-Control-Allow-Headers
+                value: "*"
+            - name: SetResponseHeader
+              args:
+                name: Access-Control-Allow-Credentials
+                value: "true"
                 
         # AI Analysis Service Routes
         - id: ai-analysis-service
