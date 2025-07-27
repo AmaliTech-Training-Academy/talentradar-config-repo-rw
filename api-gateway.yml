@@ -16,6 +16,8 @@ spring:
       expiration: ${JWT_EXPIRATION_MS}
   cloud:
     gateway:
+      websocket:
+        enabled: true
       globalcors:
         corsConfigurations:
           '[/**]':
@@ -82,6 +84,9 @@ spring:
               args:
                 name: Access-Control-Allow-Credentials
                 value: "true"
+            - name: RemoveRequestHeader
+              args:
+                name: Sec-WebSocket-Key
                 
         # AI Analysis Service Routes
         - id: ai-analysis-service
