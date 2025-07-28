@@ -22,10 +22,11 @@ spring:
         corsConfigurations:
           '[/**]':
             allowedOrigins:
+              - http://talent-radar-unified-alb-1041393351.eu-west-1.elb.amazonaws.com:3000
+              - http://talent-radar-unified-alb-1041393351.eu-west-1.elb.amazonaws.com
               - http://localhost:3000
               - https://talentradar-frontend-project-rw.vercel.app
               - https://talentradar-frontend-proj-git-ee52f0-muhirwas-projects-2023eaf6.vercel.app
-              - http://talent-radar-unified-alb-1041393351.eu-west-1.elb.amazonaws.com:3000
               
             allowedMethods:
               - GET
