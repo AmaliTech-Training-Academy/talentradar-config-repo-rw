@@ -72,7 +72,7 @@ spring:
             - name: SetResponseHeader
               args:
                 name: Access-Control-Allow-Origin
-                value: "*"
+                value: "http://localhost:3000"
             - name: SetResponseHeader
               args:
                 name: Access-Control-Allow-Methods
